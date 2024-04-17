@@ -2,11 +2,17 @@ import React from 'react'
 
 const Addproduct = () => {
   return (
+
+    //write here the code for backend to add products
     <div>
     
     
     
-    Addproduct
+    <Button classname='font-bold text-3xl'> 
+
+    Add product
+    
+    </Button>
     
     
     
