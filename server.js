@@ -4,16 +4,43 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
-
-// Middleware to parse JSON bodies
-app.use(express.json());
+const bodyParser = require("body-parser")
+const path = require("path")
 
 // Enable CORS
 app.use(cors());
+// Middleware to parse JSON bodies
+app.use(express.json());
+app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }));
+
+// Serve static files (images)
+app.use("/images", express.static(path.join(__dirname, "productimg")));
+
+
 
 // Import user routes
 const userRoute = require("./Routes/userRoutes.js");
+const productRoute = require("./Routes/productRoute.js");
 app.use("/api", userRoute);
+app.use("/product", productRoute)
+
+// Route to serve image data
+app.get("/api/images/:filename", (req, res) => {
+  const { filename } = req.params;
+  const imagePath = path.join(__dirname, "productimg", filename);
+
+  // Read the image file and send it as a response
+  fs.readFile(imagePath, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(404).send("Image not found");
+    } else {
+      res.writeHead(200, { "Content-Type": "image/jpeg" });
+      res.end(data);
+    }
+  });
+});
 
 const PORT = process.env.PORT || 8000;
 
