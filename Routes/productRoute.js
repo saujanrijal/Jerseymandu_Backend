@@ -11,7 +11,8 @@ const router = express.Router();
 const { createProduct, getallProduct } = require("../controllers/productController");
 const upload = require("../utils/imageUpload");
 
-router.post("/createproduct",createProduct); // Ensure "file" matches the field name in the frontend
+// router.post("/createproduct",createProduct); // Ensure "file" matches the field name in the frontend
+router.post("/createproduct", upload.single('productImage'), createProduct);
 router.get("/getproduct",getallProduct)
 
 module.exports = router;
