@@ -26,7 +26,7 @@ app.use("/api", userRoute);
 app.use("/product", productRoute)
 
 // Route to serve image data
-app.get("/api/images/:filename", (req, res) => {
+app.get("/images/:filename", (req, res) => {
   const { filename } = req.params;
   const imagePath = path.join(__dirname, "productimg", filename);
 
@@ -41,6 +41,8 @@ app.get("/api/images/:filename", (req, res) => {
     }
   });
 });
+
+
 
 const PORT = process.env.PORT || 8000;
 
