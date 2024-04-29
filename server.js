@@ -25,6 +25,9 @@ const productRoute = require("./Routes/productRoute.js");
 app.use("/api", userRoute);
 app.use("/product", productRoute)
 
+
+
+
 // Route to serve image data
 app.get("/images/:filename", (req, res) => {
   const { filename } = req.params;
