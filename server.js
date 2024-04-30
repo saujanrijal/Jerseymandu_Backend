@@ -22,8 +22,11 @@ app.use("/images", express.static(path.join(__dirname, "productimg")));
 // Import user routes
 const userRoute = require("./Routes/userRoutes.js");
 const productRoute = require("./Routes/productRoute.js");
+const documentRoute = require("./Routes/documentRoute.js");
+
 app.use("/api", userRoute);
-app.use("/product", productRoute)
+app.use("/product", productRoute);
+app.use("/doc",documentRoute);
 
 
 
