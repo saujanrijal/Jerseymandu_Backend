@@ -99,7 +99,71 @@ const showaddtocart = async (req, res) => {
     }
     // res.status(200).json({ message: "Running" })
 };
+
+const updatecartQuantity = async (req, res) => {
+    const { userId, cartData } = req.body;
+    try {
+      let userCart = await CartAdd.findOne({ userId });
+      cartData.forEach((item) => {
+        const product = userCart.products.find((p) => p.productId === item._id);
+        if (product) {
+          product.quantity = item.quantity;
+        }
+      });
+      userCart = await userCart.save();
+      res
+        .status(200)
+        .json({ message: "Cart data updated successfully", cartData: userCart });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Failed to update cart data" });
+    }
+    // res.status(200).json({message:"running"})
+  };
+
+
+
+  const deleteCartData = async (req, res) => {
+
+    const userId = req.params.userId;
+    const productId = req.params.productId;
+  
+    // console.log("Received userId:", userId);
+    // console.log("Received productId:", productId);
+  
+    try {
+      // Find the user's cart data by userId
+      let cart = await CartAdd.findOne({ userId });
+  
+      // If cart data doesn't exist, return an error
+      if (!cart) {
+        return res.status(404).json({ message: "Cart data not found" });
+      }
+  
+      // Filter out the selected product from the cart data
+      cart.products = cart.products.filter(
+        (product) => product.productId !== productId
+      );
+  
+      // Save the updated cart data
+      await cart.save();
+  
+      // Return success response
+      return res
+        .status(200)
+        .json({ message: "Product deleted from cart successfully" });
+    } catch (error) {
+      console.error(error);
+      // Return error response
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    // res.status(200).json({message:"Running sucessfully"})
+  };
+
 module.exports = {
     addtoCart,
     showaddtocart,
+    updatecartQuantity,
+    deleteCartData,
+
 }

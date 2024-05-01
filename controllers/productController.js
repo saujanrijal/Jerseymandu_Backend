@@ -126,6 +126,54 @@ const getuser=async(req,res)=>{
     }
     
 }
+
+const updateProduct = async (req, res) => {
+    const productId = req.params.id;
+  console.log(req.file);
+
+    const { jerseyType, productName, description, size, stock, price } =
+      req.body;
+    try {
+      const product = await Product.findById(productId);
+  
+      if (!product) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      // Update the product fields
+      product.productName = productName;
+      product.jerseyType = jerseyType;
+      product.description = description;
+      product.size = size;
+      product.price = price;
+      product.stock = stock;
+    
+  
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path);
+        product.productImage = result.secure_url;
+      }
+      await product.save();
+      res.json(product);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to update product" });
+    }
+  };
+
+  //Delete a product
+const deleteProduct = async (req, res) => {
+    try {
+      const product = await Product.findByIdAndDelete(req.params.id);
+      if (!product) {
+        res.status(401).json({ message: "Product not found" });
+      }
+      res.status(200).json({ message: "Sucessfully Deleted" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+
 module.exports = {
     createProduct,
     getallProduct,
@@ -135,4 +183,6 @@ module.exports = {
     getProductDetail,
     searchProduct,
     getuser,
+    updateProduct,
+    deleteProduct,
 }
