@@ -74,53 +74,46 @@ const loginhandler = async (req, res) => {
 
     //Check if the user is admin
     if (user.isAdmin) {
-      const token = jwt.sign({ user, role: "admin" }, process.env.JWT_SECRET, {
-        expiresIn: "10s",
+      const token = jwt.sign(
+        { userId: user._id, email: user.email, name: user.name, role: "admin" },
+        process.env.JWT_SECRET,
+        { expiresIn: "10s" }
+      );
+      res.status(200).json({
+        message: "Login successful for admin",
+        data: { user, token, role: "admin" },
       });
-      res
-        .status(200)
-        .json({
-          message: "Login sucessful for admin",
-          data: { user, token, role: "admin" },
-        });
     } else {
       const token = jwt.sign(
         { userId: user._id, email: user.email, name: user.name },
         process.env.JWT_SECRET,
         { expiresIn: "10s" }
       );
-      res
-        .status(200)
-        .json({ message: "Login sucessful", data: { user, token } });
+      res.status(200).json({ message: "Login successful", data: { user, token } });
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-// //Get all user details
-// const getAllUsers = async (req, res) => {
-//   try {
-//     const users = await User.find();
-//     if (!users || users.length === 0) {
-//       return res.status(404).json({ message: " No Users Found" });
-//     }
-//     return res.status(200).json(users)
-//   } catch (error) {
-//     console.log(error)
+const getallUser = async (req, res) => {
+  try {
+    const users = await Signupdata.find();
+    res.status(200).json(users);
 
-//   }
+  } catch (error) {
+    res.status(501).json(error)
+    console.log(error);
 
-// };
-// ... (other imports and functions)
-
-// Get user details
+  }
+  // res.status(200).json({ message: "Running" })
+}
 
 
 
 module.exports = {
   signuphandler,
   loginhandler,
-
+  getallUser,
 };
 

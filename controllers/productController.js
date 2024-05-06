@@ -1,28 +1,8 @@
 const { Product } = require("../Models/productModel")
 const cloudinary = require("../utils/cloudinary");
-const {Signupdata}=require("../Models/userModels")
-// const createProduct = async (req, res) => {
-//     try {
-//         const { productName, jerseyType, description, size, stock, price, productImage } = req.body;
-//         if (!productName || !jerseyType || !description || !size || !stock || !price) {
-//             return res.status(400).json({ message: "Please fill all the required fields" });
-//         }
 
-//         const product = await Product.create({
-//             productName,
-//             jerseyType,
-//             description,
-//             size,
-//             stock,
-//             price,
-//             productImage,
-//         });
-//         return res.status(201).json({ message: "Product created successfully", product });
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).json({ error: error.message });
-//     }
-// };
+
+
 const createProduct = async (req, res) => {
     try {
         const { productName, jerseyType, description, size, stock, price } = req.body;
@@ -115,17 +95,7 @@ const searchProduct = async (req, res) => {
     }
 };
 
-const getuser=async(req,res)=>{
-    try {
-        const users= await Signupdata.find({});
-        res.status(200).json({users})
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({error})
-        
-    }
-    
-}
+
 
 const updateProduct = async (req, res) => {
     const productId = req.params.id;
@@ -182,7 +152,6 @@ module.exports = {
     getLocaljersey,
     getProductDetail,
     searchProduct,
-    getuser,
     updateProduct,
     deleteProduct,
 }
