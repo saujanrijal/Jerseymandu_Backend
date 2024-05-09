@@ -23,10 +23,12 @@ app.use("/images", express.static(path.join(__dirname, "productimg")));
 const userRoute = require("./Routes/userRoutes.js");
 const productRoute = require("./Routes/productRoute.js");
 const documentRoute = require("./Routes/documentRoute.js");
+const orderRoute= require("./Routes/orderRoute.js");
 
 app.use("/api", userRoute);
 app.use("/product", productRoute);
 app.use("/doc",documentRoute);
+app.use("/order",orderRoute);
 
 
 
